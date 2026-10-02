@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Models.cs" Link="Models.cs" />
+    <Compile Include="../PricingCatalog.cs" Link="PricingCatalog.cs" />
+    <Compile Include="../SessionParser.cs" Link="SessionParser.cs" />
+    <Compile Include="../MonitorSettings.cs" Link="MonitorSettings.cs" />
+    <Compile Include="../MonitorPaths.cs" Link="MonitorPaths.cs" />
+    <Compile Include="../StartupOptions.cs" Link="StartupOptions.cs" />
+    <Compile Include="../QuotaDisplay.cs" Link="QuotaDisplay.cs" />
+    <Compile Include="../ModelResponseLogReader.cs" Link="ModelResponseLogReader.cs" />
+  </ItemGroup>
+</Project>

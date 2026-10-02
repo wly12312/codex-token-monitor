@@ -1,0 +1,149 @@
+<Window x:Class="CodexTokenMonitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="Codex Usage" Icon="Assets/AppIcon.ico" Width="232" Height="284"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize"
+        Background="{StaticResource BgBrush}" Foreground="{StaticResource TextBrush}"
+        UseLayoutRounding="True" SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display">
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="30" ResizeBorderThickness="0" CornerRadius="12" GlassFrameThickness="0"/>
+    </shell:WindowChrome.WindowChrome>
+    <Border Margin="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Background="{StaticResource PanelBrush}">
+        <Grid Margin="9">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="26"/><RowDefinition Height="28"/><RowDefinition Height="44"/><RowDefinition Height="38"/>
+                <RowDefinition Height="28"/><RowDefinition Height="28"/><RowDefinition Height="26"/><RowDefinition Height="24"/><RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="28"/><ColumnDefinition Width="42"/></Grid.ColumnDefinitions>
+                <TextBlock Text="Codex usage" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                <Button x:Name="MenuButton" Grid.Column="1" Content="⋯" Height="24" Width="24" Padding="0" AutomationProperties.Name="Monitor options" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button.ContextMenu><ContextMenu><MenuItem x:Name="PinItem" Header="Always on top" IsCheckable="True"/><MenuItem x:Name="RemainingQuotaItem" Header="显示剩余额度" IsCheckable="True"/></ContextMenu></Button.ContextMenu>
+                </Button>
+                <Button x:Name="CloseButton" Grid.Column="2" Content="Close" Width="39" Height="24" Padding="0" FontSize="9" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        AutomationProperties.Name="Close usage monitor" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
+            </Grid>
+
+            <Border Grid.Row="1" Background="{StaticResource BgBrush}" CornerRadius="8" Padding="5,0" Margin="0,0,0,2">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Ellipse x:Name="MonitorStatusDot" Width="6" Height="6" Fill="{StaticResource MutedBrush}" Margin="0,0,4,0" AutomationProperties.Name="等待读取日志"/>
+                        <ComboBox x:Name="ModelSelector" DisplayMemberPath="Label" Width="144" Height="24" MinHeight="0" Padding="4,0"
+                                  FontSize="9" FontWeight="SemiBold" AutomationProperties.Name="Usage model and source"
+                                  VerticalContentAlignment="Center" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                            <ComboBox.Style>
+                                <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </Style>
+                            </ComboBox.Style>
+                        </ComboBox>
+                    </StackPanel>
+                    <TextBlock x:Name="LatestTimeText" Grid.Column="1" Text="--:--" HorizontalAlignment="Right" VerticalAlignment="Center"
+                               Foreground="{StaticResource MutedBrush}" FontSize="9" ToolTip="Latest turn time for the selected model"/>
+                </Grid>
+            </Border>
+
+            <UniformGrid Grid.Row="2" Columns="3" Margin="0,3,0,4">
+                <StackPanel><TextBlock x:Name="InputLabelText" Text="Input" Foreground="{StaticResource MutedBrush}" FontSize="9"/><TextBlock x:Name="InputText" Text="--" FontSize="16" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel>
+                <StackPanel><TextBlock x:Name="CachedLabelText" Text="Cached" Foreground="{StaticResource MutedBrush}" FontSize="9"/><TextBlock x:Name="CachedText" Text="--" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource TealBrush}" Margin="0,3,0,0"/></StackPanel>
+                <StackPanel><TextBlock x:Name="OutputLabelText" Text="Output" Foreground="{StaticResource MutedBrush}" FontSize="9"/><TextBlock x:Name="OutputText" Text="--" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource PurpleBrush}" Margin="0,3,0,0"/></StackPanel>
+            </UniformGrid>
+
+            <Grid Grid.Row="3" Margin="0,2,0,3">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                <StackPanel><TextBlock x:Name="CreditsLabelText" Text="Credits" Foreground="{StaticResource MutedBrush}" FontSize="9"/><TextBlock x:Name="CreditsText" Text="--" FontSize="14" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel>
+                <StackPanel Grid.Column="1"><TextBlock x:Name="ApiLabelText" Text="API eq." Foreground="{StaticResource MutedBrush}" FontSize="9" ToolTip="Undiscounted API-equivalent estimate"/><TextBlock x:Name="UsdText" Text="--" FontSize="14" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="4" Margin="0,2,0,2">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                <StackPanel Margin="0,0,5,0" ToolTip="Cached input ÷ total input for the selected model"><Grid><TextBlock Text="Cache" Foreground="{StaticResource MutedBrush}" FontSize="9"/><TextBlock x:Name="CacheHitText" Text="--" HorizontalAlignment="Right" FontSize="9"/></Grid><ProgressBar x:Name="CacheHitBar" Height="3" Minimum="0" Maximum="100" Foreground="{StaticResource TealBrush}" Background="#E9ECF1" BorderThickness="0" Margin="0,5,0,0" AutomationProperties.Name="Cache hit rate"/></StackPanel>
+                <StackPanel x:Name="FiveHourPanel" Grid.Column="1" Margin="3,0,3,0"><Grid><TextBlock x:Name="FiveHourLabel" Text="5h" Foreground="{StaticResource MutedBrush}" FontSize="9"/><TextBlock x:Name="FiveHourText" Text="--" HorizontalAlignment="Right" FontSize="9"/></Grid><ProgressBar x:Name="FiveHourBar" Height="3" Minimum="0" Maximum="100" Foreground="{StaticResource TealBrush}" Background="#E9ECF1" BorderThickness="0" Margin="0,5,0,0" AutomationProperties.Name="Five hour usage"/></StackPanel>
+                <StackPanel x:Name="WeeklyPanel" Grid.Column="2" Margin="5,0,0,0"><Grid><TextBlock x:Name="WeeklyLabel" Text="Wk" Foreground="{StaticResource MutedBrush}" FontSize="9"/><TextBlock x:Name="WeeklyText" Text="--" HorizontalAlignment="Right" FontSize="9"/></Grid><ProgressBar x:Name="WeeklyBar" Height="3" Minimum="0" Maximum="100" Foreground="{StaticResource PurpleBrush}" Background="#E9ECF1" BorderThickness="0" Margin="0,5,0,0" AutomationProperties.Name="Weekly usage"/></StackPanel>
+            </Grid>
+
+            <StackPanel x:Name="ContextPanel" Grid.Row="5" Margin="0,2,0,4">
+                <Grid><TextBlock Text="Context*" FontSize="9" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="ContextText" Text="--" FontSize="9" HorizontalAlignment="Right"/></Grid>
+                <ProgressBar x:Name="ContextBar" Height="3" Minimum="0" Maximum="100" Margin="0,5,0,0" Foreground="{StaticResource TealBrush}" Background="#E9ECF1" BorderThickness="0" AutomationProperties.Name="Last request input relative to context window"/>
+            </StackPanel>
+            <Grid Grid.Row="6" Margin="0,1">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <ComboBox x:Name="ConversationSelector" Height="24" MinHeight="0" Padding="5,0" IsTextSearchEnabled="False"
+                          FontSize="10" VerticalContentAlignment="Center" Margin="0,0,7,0" AutomationProperties.Name="查找并选择任务">
+                    <ComboBox.ToolTip>
+                        <ToolTip><TextBlock Text="{Binding PlacementTarget.Tag.Label, RelativeSource={RelativeSource AncestorType=ToolTip}}" MaxWidth="240" TextWrapping="Wrap"/></ToolTip>
+                    </ComboBox.ToolTip>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayLabel}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap">
+                                <TextBlock.ToolTip>
+                                    <ToolTip><StackPanel MaxWidth="240">
+                                        <TextBlock Text="{Binding Label}" TextWrapping="Wrap" MaxHeight="180"/>
+                                        <TextBlock Text="{Binding Updated, StringFormat={}{0:MM-dd HH:mm}}" Foreground="{StaticResource MutedBrush}" Margin="0,5,0,0"/>
+                                        <TextBlock Text="{Binding SessionId}" FontSize="9" Foreground="{StaticResource MutedBrush}"/>
+                                    </StackPanel></ToolTip>
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="6,5"/>
+                            <Setter Property="MinHeight" Value="25"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBox.Template>
+                        <ControlTemplate TargetType="ComboBox">
+                            <Grid>
+                                <ToggleButton Focusable="False" IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" ClickMode="Press">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border x:Name="Frame" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6">
+                                                <TextBlock Text="⌄" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Frame" Property="Background" Value="#E9ECF2"/></Trigger>
+                                                <Trigger Property="IsChecked" Value="True"><Setter TargetName="Frame" Property="BorderBrush" Value="{StaticResource TealBrush}"/></Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+                                <ContentPresenter Margin="6,0,22,0" VerticalAlignment="Center" IsHitTestVisible="False"
+                                                  Content="{TemplateBinding Tag}" ContentTemplate="{TemplateBinding ItemTemplate}"/>
+                                <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
+                                    <Border x:Name="PickerPanel" Width="210" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="4" Margin="0,3,0,0">
+                                        <StackPanel KeyboardNavigation.TabNavigation="Cycle">
+                                            <Grid Margin="2,2,2,4">
+                                                <TextBox x:Name="TaskSearchBox" Height="27" Padding="5,4,22,4" FontSize="10" BorderBrush="{StaticResource BorderBrush}" AutomationProperties.Name="搜索任务名称或编号"/>
+                                                <TextBlock x:Name="SearchPlaceholder" Text="搜索任务…" Foreground="{StaticResource MutedBrush}" Margin="6,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                                <Button x:Name="ClearSearchButton" Content="×" Width="21" Height="21" Padding="0" HorizontalAlignment="Right" Margin="0,0,2,0" ToolTip="清空搜索" AutomationProperties.Name="清空搜索"/>
+                                            </Grid>
+                                            <ScrollViewer MaxHeight="150" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                                                <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                            </ScrollViewer>
+                                            <TextBlock x:Name="SearchStatus" Text="最近 5 个 · 输入关键词查找" Margin="6,4,4,3" FontSize="9" Foreground="{StaticResource MutedBrush}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </ControlTemplate>
+                    </ComboBox.Template>
+                </ComboBox>
+                <Button x:Name="RefreshButton" Grid.Column="1" Content="Refresh" Height="24" Padding="8,0" FontSize="9" AutomationProperties.Name="Refresh usage"/>
+            </Grid>
+            <Button x:Name="DetailsButton" Grid.Row="7" Content="任务概览" FontSize="9" Height="21" Padding="0" Margin="0,2,0,0" IsEnabled="False" AutomationProperties.Name="显示紧凑任务概览"/>
+            <Border Grid.Row="8" Background="{StaticResource PanelAltBrush}" CornerRadius="6" Padding="6,2" Margin="0,1,0,0" VerticalAlignment="Stretch">
+                <Grid>
+                    <TextBlock x:Name="TotalLabelText" Text="TOTAL" Foreground="{StaticResource MutedBrush}" FontSize="8" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="ConversationTotalText" Text="-- cr · $--" Foreground="{StaticResource TextBrush}" FontSize="9" FontWeight="Bold" Margin="60,0,0,0"
+                               HorizontalAlignment="Right" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

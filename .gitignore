@@ -1,0 +1,43 @@
+# Build products and local verification data
+**/bin/
+**/obj/
+artifacts/
+publish/
+*.zip
+*.user
+*.suo
+.vs/
+
+# Local settings and Codex data must never become repository contents
+data/
+settings.json
+settings.json.tmp
+.codex/
+sessions/
+archived_sessions/
+session_index.jsonl
+logs_*.sqlite*
+auth.json
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.p12
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.db
+*.log
+*.jsonl
+*.secrets.json
+application.json
+application-private.*
+
+# Private application drafts and local scratch files
+docs/OPEN_SOURCE_PLAN.md
+scratch/
+tmp/
+
+# Synthetic fixtures are generated at test time; reviewed docs images are allowed.

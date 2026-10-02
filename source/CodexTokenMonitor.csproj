@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>CodexTokenMonitor</AssemblyName>
+    <RootNamespace>CodexTokenMonitor</RootNamespace>
+    <Version>1.3.8</Version>
+    <FileVersion>1.3.8.0</FileVersion>
+    <AssemblyVersion>1.3.8.0</AssemblyVersion>
+    <AssemblyTitle>Codex Token Monitor</AssemblyTitle>
+    <Product>Codex Token Monitor</Product>
+    <Company>Local Codex Tools</Company>
+    <Description>Local read-only Codex session token monitor</Description>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="tests/**/*.cs" />
+    <None Remove="tests/**" />
+    <None Include="README.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Resource Include="Assets\AppIcon.ico" />
+  </ItemGroup>
+</Project>
+

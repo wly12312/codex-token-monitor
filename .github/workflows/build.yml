@@ -1,0 +1,31 @@
+name: Windows build and checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Check public file list
+        shell: pwsh
+        run: ./scripts/Verify-PublicFiles.ps1
+      - name: Build
+        shell: pwsh
+        run: ./scripts/Build.ps1
+      - name: Synthetic regression checks
+        shell: pwsh
+        run: ./scripts/Test.ps1
+      - name: Publish framework-dependent package
+        shell: pwsh
+        run: ./scripts/Publish.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CodexTokenMonitor-framework-dependent
+          path: artifacts/publish/framework-dependent/
